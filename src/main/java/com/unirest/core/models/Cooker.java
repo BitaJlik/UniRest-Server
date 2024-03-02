@@ -7,33 +7,20 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
-@Table(name = "rooms")
-public class Room implements Comparable<Room>, IProviderId<Long> {
-
+@Table(name = "cookers")
+public class Cooker implements IProviderId<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int roomNumber;
-    private int availableBeds;
+    private boolean isBusy;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
-    private List<User> users;
+    private long lastUse;
 
-    private String notes;
-
-    //
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     private Floor floor;
-
-    @Override
-    public int compareTo(Room room) {
-        return Integer.compare(roomNumber, room.getRoomNumber());
-    }
 }
