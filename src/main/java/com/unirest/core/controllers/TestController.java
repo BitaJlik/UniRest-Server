@@ -2,15 +2,15 @@ package com.unirest.core.controllers;
 
 import com.unirest.core.models.*;
 import com.unirest.core.repositories.*;
-import jakarta.transaction.TransactionScoped;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,23 +35,45 @@ public class TestController {
     private CookersRepository cookersRepository;
     @Autowired
     private RequestRepository requestRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
+    @Autowired
+    private UserRolesRepository userRolesRepository;
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     private static final String[] FIRST_NAMES = {"John", "Emma", "Michael", "Sophia", "William", "Olivia", "James", "Ava", "Alexander", "Isabella"};
     private static final String[] LAST_NAMES = {"Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor"};
     private static final String[] DOMAINS = {"gmail.com", "yahoo.com", "hotmail.com", "outlook.com"};
     private static final String[] PASSWORDS = {"password1", "password2", "password3", "password4", "password5"};
 
+    private static final String[] ROLES = {"commandant", "helper", "dorm_supervisor", "floor_supervisor", "other"};
+    private static final Long[] expires = {1622870400L, 1654406400L, 1686038400L, 1717574400L};
+
     @GetMapping("/init")
+
     public ResponseEntity<List<Dormitory>> test() {
-        System.out.println(System.currentTimeMillis());
         List<Dormitory> dormitories = new ArrayList<>();
 
         for (int i = 1; i < 2; i++) {
             Dormitory dormitory = new Dormitory();
+
+            dormitoryRepository.saveAndFlush(dormitory);
+
+            for (int s = 0; s < 5; s++) {
+                UserRole userRole = new UserRole();
+                userRole.setDormitory(dormitory);
+                userRole.setName(ROLES[s]);
+                userRole.setLevel(s);
+                userRolesRepository.save(userRole);
+            }
+
             dormitory.setName("Гуртожиток №" + i);
             dormitory.setAddress("Вулия №" + i);
             dormitory.setHasElevator(Math.random() * 10 > 6);
-            dormitory.setCommandant(createUser());
+            User commandant = createUser();
+            commandant.setRole((userRolesRepository.findAll().get(0)));
+            dormitory.setCommandant(commandant);
             dormitoryRepository.saveAndFlush(dormitory);
 
             List<Floor> floors = new ArrayList<>();
@@ -65,6 +87,7 @@ public class TestController {
                         User user = createUser();
                         user.setRoom(room);
                         user.setRequests(createRequests(dormitory, user));
+                        user.setPayments(createPayments(dormitory, user));
                         users.add(user);
                     }
                     room.setUsers(users);
@@ -88,14 +111,46 @@ public class TestController {
         }
 
         dormitoryRepository.saveAll(dormitories);
+        Random random = new Random();
+        int minDay = (int) LocalDate.of(2021, 1, 1).toEpochDay();
+        int maxDay = (int) LocalDate.of(2024, 1, 1).toEpochDay();
+
+        List<User> all = userRepository.findAll();
+        for (User user : all) {
+            Notification notification = new Notification();
+            notification.setContent(UUID.randomUUID().toString().replace("-", ""));
+            notification.setTitle(UUID.randomUUID().toString().replace("-", ""));
+            long randomDay = minDay + random.nextInt(maxDay - minDay);
+            notification.setDate(randomDay);
+            if (Math.random() * 10 > 5) {
+                notification.setReceiver(user);
+                notification.setSender(random(all.toArray(new User[]{})));
+            } else {
+                notification.setSender(user);
+                notification.setReceiver(random(all.toArray(new User[]{})));
+            }
+            notificationRepository.save(notification);
+        }
 
         return ResponseEntity.ok(dormitories);
+    }
+
+    private List<Payment> createPayments(Dormitory dormitory, User user) {
+        List<Payment> list = new ArrayList<>();
+        for (int i = 0; i < Math.random() * 6; i++) {
+            Payment payment = new Payment();
+            payment.setDate((long) (System.currentTimeMillis() - Math.random() * System.currentTimeMillis()));
+            payment.setBalance((int) (500 + Math.random() * 500));
+            payment.setUser(user);
+            payment.setDormitory(dormitory);
+            list.add(paymentRepository.saveAndFlush(payment));
+        }
+        return list;
     }
 
     @GetMapping("/get")
     public ResponseEntity<Dormitory> get() {
         Dormitory body = dormitoryRepository.findAll().get(0);
-        System.out.println(body);
         return ResponseEntity.ok(body);
     }
 
@@ -137,24 +192,29 @@ public class TestController {
             request.setDate(randomDay);
             request.setHeader(UUID.randomUUID().toString().replace("-", ""));
             request.setDormitory(dormitory);
+            request.setType(Request.RequestType.values()[(int) (Math.random() * Request.RequestType.values().length)]);
             request.setUser(user);
-            requestRepository.save(request);
-            list.add(request);
+            list.add(requestRepository.save(request));
         }
 
         return list;
     }
+
+    private static int i;
 
     public User createUser() {
         User user = new User();
         user.setName(random(FIRST_NAMES));
         user.setLastName(random(LAST_NAMES));
         user.setSurName(random(FIRST_NAMES) + "`s");
-        user.setPassword(random(PASSWORDS));
-        user.setEmail(generateEmail(user.getName(), user.getLastName()));
-        user.setUuid(UUID.randomUUID().toString());
+        user.setPassword(encryptSHA256(random(PASSWORDS)));
+        user.setEmail(generateEmail(user.getName() + ++i, user.getLastName()));
         user.setCourse((int) (1 + Math.random() * 3));
         user.setSession(createSession());
+        user.setBalance((int) (Math.random() * 1000));
+        user.setPhoneNumber(generatePhoneNumber());
+        user.setExpire(random(expires) * 1000);
+
         return userRepository.saveAndFlush(user);
     }
 
@@ -167,6 +227,44 @@ public class TestController {
 
     public <T> T random(T[] list) {
         return list[(int) (Math.random() * list.length)];
+    }
+
+    private String encryptSHA256(String str) {
+        String ps;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(str.getBytes());
+            ps = transformHex(md.digest());
+        } catch (NoSuchAlgorithmException e) {
+            return "";
+        }
+        return ps;
+    }
+
+    private String transformHex(byte[] bts) {
+        StringBuilder des = new StringBuilder();
+        String tmp;
+        for (byte bt : bts) {
+            tmp = (Integer.toHexString(bt & 0xFF));
+            if (tmp.length() == 1) {
+                des.append("0");
+            }
+            des.append(tmp);
+        }
+        return des.toString();
+    }
+
+    public String generatePhoneNumber() {
+        String countryCode = "38";
+        String[] operatorCodes = {"66", "67", "68", "97", "98", "50"};
+        Random random = new Random();
+        StringBuilder phoneNumber = new StringBuilder(countryCode + "0" + random(operatorCodes));
+
+        for (int i = 0; i < 7; i++) {
+            phoneNumber.append(random.nextInt(10));
+        }
+
+        return phoneNumber.toString();
     }
 
 

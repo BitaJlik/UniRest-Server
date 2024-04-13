@@ -4,6 +4,7 @@ import com.unirest.core.utils.IProviderId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -61,8 +62,14 @@ public abstract class BaseController<Data extends IProviderId<?>, DataID, DTOCla
 
     @PostMapping("/remove")
     public ResponseEntity<String> remove(@RequestParam DataID id) {
-        repository.deleteById(id);
-        return ResponseEntity.status(202).build();
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return ResponseEntity.status(202).build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
+
 
 }

@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.concurrent.Callable;
+
 @Entity
 @Getter
 @Setter
@@ -29,6 +31,6 @@ public class Request implements IProviderId<Long> {
     private Dormitory dormitory;
 
     public enum RequestType {
-
+        ADD, REMOVE, UPDATE
     }
 }

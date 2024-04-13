@@ -14,6 +14,9 @@ public class DTOFloor {
     private int number;
     private String shortName;
     private Floor.FloorSide floorSide;
+    private Integer minRoomNumber;
+    private Integer maxRoomNumber;
+
     private List<Long> rooms = new ArrayList<>();
     private List<Long> cookers = new ArrayList<>();
 
@@ -22,9 +25,19 @@ public class DTOFloor {
         this.number = floor.getFloorNumber();
         this.shortName = floor.getShortName();
         this.floorSide = floor.getFloorSide();
+        minRoomNumber = floor.getRooms().get(0).getRoomNumber();
+        maxRoomNumber = floor.getRooms().get(0).getRoomNumber();
 
         for (Room room : floor.getRooms()) {
             rooms.add(room.getId());
+
+            int roomNumber = room.getRoomNumber();
+            if (roomNumber < minRoomNumber) {
+                minRoomNumber = roomNumber;
+            }
+            if (roomNumber > maxRoomNumber) {
+                maxRoomNumber = roomNumber;
+            }
         }
 
         for (Cooker cooker : floor.getCookers()) {

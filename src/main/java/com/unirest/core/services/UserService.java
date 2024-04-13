@@ -2,6 +2,7 @@ package com.unirest.core.services;
 
 import com.unirest.core.models.Session;
 import com.unirest.core.models.User;
+import com.unirest.core.repositories.SessionRepository;
 import com.unirest.core.repositories.UserRepository;
 import com.unirest.core.utils.JWTUtils;
 import io.jsonwebtoken.Claims;
@@ -15,6 +16,9 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    SessionRepository sessionRepository;
 
     public User saveOrUpdate(User user) {
         return userRepository.save(user);
@@ -30,6 +34,10 @@ public class UserService {
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 
     public boolean isTokenBelongsUser(String token) {
@@ -51,18 +59,22 @@ public class UserService {
         return false;
     }
 
-    public void register(String username, String email, String password) {
+    public User register(String email, String password) {
         User user = new User();
 
-        user.setUsername(username);
         user.setEmail(email);
         user.setPassword(password);
 
         Session session = new Session();
         session.updateDate();
 
-        user.setSession(session);
+        user.setSession(sessionRepository.save(session));
 
+        return userRepository.save(user);
+    }
+
+    public void onUpdateActive(User user) {
+        user.setLastActive(System.currentTimeMillis());
         userRepository.save(user);
     }
 

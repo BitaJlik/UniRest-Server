@@ -13,7 +13,6 @@ public class DTORequest {
 
     private long user;
     private long dormitory;
-
     public DTORequest(Request request) {
         this.id = request.getId();
         this.header = request.getHeader();

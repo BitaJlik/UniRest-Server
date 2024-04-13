@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/dormitory")
 public class DormitoryController extends BaseController<Dormitory, Long, DTODormitory, DormitoryRepository> {
-
-
     public DormitoryController(DormitoryRepository dormitoryRepository) {
         super(dormitoryRepository, Dormitory.class, DTODormitory.class);
     }

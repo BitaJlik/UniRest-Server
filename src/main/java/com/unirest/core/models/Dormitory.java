@@ -24,7 +24,9 @@ public class Dormitory implements IProviderId<Long> {
     private String address;
     private boolean hasElevator;
 
-    @OneToMany(mappedBy = "dormitory", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private CookerType cookerType;
+
+    @OneToMany(mappedBy = "dormitory")
     private List<Floor> floors = new ArrayList<>();
 
     @OneToOne

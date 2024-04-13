@@ -5,7 +5,6 @@ import com.unirest.core.utils.IProviderId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.List;
 
@@ -22,9 +21,11 @@ public class Room implements Comparable<Room>, IProviderId<Long> {
     private int roomNumber;
     private int availableBeds;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "room")
+    @JsonIgnore
     private List<User> users;
 
+    @JsonIgnore
     private String notes;
 
     //
