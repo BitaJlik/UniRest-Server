@@ -1,8 +1,8 @@
 package com.unirest.core.controllers;
 
 import com.unirest.core.controllers.base.BaseController;
-import com.unirest.core.models.Room;
-import com.unirest.core.models.dto.DTORoom;
+import com.unirest.data.models.Room;
+import com.unirest.data.dto.RoomDTO;
 import com.unirest.core.repositories.RoomRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/room")
-public class RoomController extends BaseController<Room, Long, DTORoom, RoomRepository> {
+public class RoomController extends BaseController<Room, Long, RoomDTO, RoomRepository> {
 
     public RoomController(RoomRepository roomRepository) {
-        super(roomRepository, Room.class, DTORoom.class);
+        super(roomRepository, Room.class, RoomDTO.class);
     }
 
     @GetMapping("/of")
@@ -27,10 +27,10 @@ public class RoomController extends BaseController<Room, Long, DTORoom, RoomRepo
         if (allByFloorId.isEmpty()) {
              return ResponseEntity.notFound().build();
         }
-        List<DTORoom> floors = new ArrayList<>();
+        List<RoomDTO> floors = new ArrayList<>();
 
         for (Room floor : allByFloorId) {
-            floors.add(new DTORoom(floor));
+            floors.add(new RoomDTO(floor));
         }
         return ResponseEntity.ok(floors);
     }

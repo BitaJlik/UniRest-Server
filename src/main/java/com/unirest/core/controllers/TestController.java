@@ -1,10 +1,9 @@
 package com.unirest.core.controllers;
 
-import com.unirest.core.models.*;
 import com.unirest.core.repositories.*;
+import com.unirest.data.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/test")
+// TODO: 07.05.2024 REMOVE IT BEFORE POST IN PRODUCTION
 public class TestController {
 
     @Autowired
@@ -71,6 +71,7 @@ public class TestController {
             dormitory.setName("Гуртожиток №" + i);
             dormitory.setAddress("Вулия №" + i);
             dormitory.setHasElevator(Math.random() * 10 > 6);
+            dormitory.setCookerType(random(CookerType.values()));
             User commandant = createUser();
             commandant.setRole((userRolesRepository.findAll().get(0)));
             dormitory.setCommandant(commandant);
@@ -225,7 +226,7 @@ public class TestController {
         return firstName.toLowerCase() + "." + lastName.toLowerCase() + "@" + domain;
     }
 
-    public <T> T random(T[] list) {
+    public static  <T> T random(T[] list) {
         return list[(int) (Math.random() * list.length)];
     }
 

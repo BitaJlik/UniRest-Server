@@ -5,6 +5,7 @@ import com.unirest.core.utils.Colors;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
@@ -18,6 +19,7 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@EntityScan("com.unirest.data.models")
 public class UniRestServerApplication {
 
     public static void main(String[] args) throws ClassNotFoundException {
@@ -28,7 +30,7 @@ public class UniRestServerApplication {
         scanner.addIncludeFilter(new AnnotationTypeFilter(GetMapping.class));
         scanner.addIncludeFilter(new AnnotationTypeFilter(PostMapping.class));
         System.out.println();
-        for (BeanDefinition bd : scanner.findCandidateComponents("com.unirest.core")) {
+        for (BeanDefinition bd : scanner.findCandidateComponents(UniRestServerApplication.class.getPackage().getName())) {
             Class<?> aClass = Class.forName(bd.getBeanClassName());
             for (Annotation requestAnnotation : aClass.getAnnotations()) {
                 if (requestAnnotation instanceof RequestMapping) {
@@ -81,3 +83,4 @@ public class UniRestServerApplication {
     }
 
 }
+

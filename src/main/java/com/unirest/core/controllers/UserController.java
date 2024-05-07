@@ -1,15 +1,15 @@
 package com.unirest.core.controllers;
 
 import com.unirest.core.controllers.base.BaseController;
-import com.unirest.core.models.dto.DTOUserPermit;
-import com.unirest.core.models.Notification;
-import com.unirest.core.models.User;
 import com.unirest.core.repositories.NotificationRepository;
 import com.unirest.core.repositories.UserRepository;
 import com.unirest.core.services.ImageService;
 import com.unirest.core.services.UserService;
 import com.unirest.core.utils.JWTUtils;
 import com.unirest.core.utils.TimedHashMap;
+import com.unirest.data.dto.UserDTO;
+import com.unirest.data.dto.UserPermitDTO;
+import com.unirest.data.models.User;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,25 +20,24 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @RestController
 @RequestMapping(value = "/user")
-public class UserController extends BaseController<User, Long, User, UserRepository> {
+public class UserController extends BaseController<User, Long, UserDTO, UserRepository> {
     private final TimedHashMap<String, String> emailCodeMap = new TimedHashMap<>();
 
-    @Autowired
-    private UserService userService;
+    private final NotificationRepository notificationRepository;
+    private final UserService userService;
+    private final ImageService imageService;
+
 
     @Autowired
-    private ImageService imageService;
-
-    @Autowired
-    private NotificationRepository notificationRepository;
-
-    public UserController(UserRepository userRepository) {
-        super(userRepository, User.class, User.class);
+    public UserController(UserRepository userRepository, NotificationRepository notificationRepository, UserService userService, ImageService imageService) {
+        super(userRepository, User.class, UserDTO.class);
+        this.notificationRepository = notificationRepository;
+        this.userService = userService;
+        this.imageService = imageService;
     }
 
     @GetMapping("/info")
@@ -46,10 +45,9 @@ public class UserController extends BaseController<User, Long, User, UserReposit
         Claims claims = JWTUtils.parse(token);
         if (claims != null) {
             String email = claims.getSubject();
-            Optional<User> optionalUser = repository.findByEmail(email);
-            if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
-                return ResponseEntity.ok(user);
+            User user = userService.findByEmail(email);
+            if (user != null) {
+                return ResponseEntity.ok(new UserDTO(user));
             }
         }
         return ResponseEntity.badRequest().build();
@@ -59,7 +57,7 @@ public class UserController extends BaseController<User, Long, User, UserReposit
     public ResponseEntity<?> getUser(@RequestParam("Id") Long id) {
         User user = userService.findById(id);
         if (user != null) {
-            DTOUserPermit userPermit = new DTOUserPermit(user);
+            UserPermitDTO userPermit = new UserPermitDTO(user);
             return ResponseEntity.ok(userPermit);
         }
         return ResponseEntity.badRequest().build();
@@ -68,7 +66,7 @@ public class UserController extends BaseController<User, Long, User, UserReposit
     @GetMapping("/check/email")
     public ResponseEntity<String> checkEmail(@RequestParam(name = "email") String email) {
         if (userService.isEmailRegistered(email)) {
-            return ResponseEntity.status(201).build();
+            return ResponseEntity.status(202).build();
         }
         return ResponseEntity.status(200).build();
     }
@@ -126,9 +124,8 @@ public class UserController extends BaseController<User, Long, User, UserReposit
 
     @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateUser(@RequestParam("id") Long userId, @RequestBody User userNew) {
-        Optional<User> optionalUser = repository.findById(userId);
-        if (optionalUser.isPresent()) {
-            User userOld = optionalUser.get();
+        User userOld = userService.findById(userId);
+        if (userOld != null) {
             if (userNew.getUsername() != null) {
                 userOld.setUsername(userNew.getUsername());
             }
@@ -154,7 +151,7 @@ public class UserController extends BaseController<User, Long, User, UserReposit
                 userOld.setEmail(userNew.getEmail());
             }
 
-            repository.save(userOld);
+            userService.saveOrUpdate(userOld);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
@@ -175,6 +172,7 @@ public class UserController extends BaseController<User, Long, User, UserReposit
         User user = userService.findById(id);
         if (user != null) {
             user.setBalance(user.getBalance() + amount);
+            userService.saveOrUpdate(user);
         }
     }
 
@@ -184,14 +182,14 @@ public class UserController extends BaseController<User, Long, User, UserReposit
         User user = userService.findById(id);
         if (user != null) {
             user.setBalance(user.getBalance() - amount);
+            userService.saveOrUpdate(user);
         }
     }
 
     @PostMapping("/image/upload")
     public ResponseEntity<?> uploadUser(@RequestParam("id") Long id, @RequestPart("image") MultipartFile multipartFile) {
-        Optional<User> optionalUser = repository.findById(id);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+        User user = userService.findById(id);
+        if (user != null) {
             imageService.saveImage("avatars", user.getEmail(), multipartFile);
             return ResponseEntity.ok().build();
         }
@@ -200,9 +198,8 @@ public class UserController extends BaseController<User, Long, User, UserReposit
 
     @GetMapping("/image/{id}")
     public ResponseEntity<?> getAvatar(@PathVariable("id") Long id) {
-        Optional<User> optionalUser = repository.findById(id);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+        User user = userService.findById(id);
+        if (user != null) {
             return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(imageService.getImageById("avatars", user.getEmail()));
         }
         return ResponseEntity.badRequest().build();
@@ -234,26 +231,28 @@ public class UserController extends BaseController<User, Long, User, UserReposit
 
     @GetMapping("/of")
     public ResponseEntity<?> of(@RequestParam("id") Long roomId) {
-        List<User> allByDormitoryId = repository.findAllByRoomId(roomId);
-        if (allByDormitoryId.isEmpty()) {
+        List<User> allByRoomId = repository.findAllByRoomId(roomId);
+        if (allByRoomId.isEmpty()) {
             ResponseEntity.notFound().build();
         }
+        List<UserDTO> roomUsers = new ArrayList<>();
 
-        return ResponseEntity.ok(allByDormitoryId);
+        for (User user : allByRoomId) {
+            roomUsers.add(new UserDTO(user));
+        }
+
+        return ResponseEntity.ok(roomUsers);
     }
 
-    @GetMapping("/updates")
-    public ResponseEntity<?> getUpdates(@RequestParam("id") Long userId) {
+    @PostMapping("/update/status")
+    public ResponseEntity<?> updateActivity(@RequestParam("id") Long userId) {
         User user = userService.findById(userId);
-        ArrayList<String> updates = new ArrayList<>();
         if (user != null) {
-            List<Notification> byReceiverAndRead = notificationRepository.findByReceiverAndRead(user, false);
-            if (!byReceiverAndRead.isEmpty()) {
-                updates.add("notifications");
-            }
-
+            user.setLastActive(System.currentTimeMillis());
+            userService.saveOrUpdate(user);
+            return ResponseEntity.ok().build();
         }
-        return ResponseEntity.ok(updates);
+        return ResponseEntity.notFound().build();
     }
 
     public int getRandomNumbers(int min, int max) {
