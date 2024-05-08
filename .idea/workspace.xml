@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_TEST_SOURCES" value="false" />
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="10fc7ad8-9074-42e8-b779-6e1b8f70050c" name="Changes" comment="Update controllers">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/UniRestServerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/UniRestServerApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/controllers/DormitoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/controllers/DormitoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/controllers/FloorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/controllers/FloorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/controllers/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/controllers/RoomController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/controllers/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/controllers/TestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/controllers/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/controllers/base/BaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/controllers/base/BaseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/models/Dormitory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/models/Dormitory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/models/Floor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/models/Floor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/models/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/models/Request.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/models/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/models/Room.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/models/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/models/dto/DTOFloor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/models/dto/DTOFloor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/models/dto/DTORequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/models/dto/DTORequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/repositories/FloorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/repositories/FloorRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/repositories/RoomRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/repositories/RoomRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/repositories/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/unirest/core/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/unirest/core/services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+    <list default="true" id="10fc7ad8-9074-42e8-b779-6e1b8f70050c" name="Changes" comment="Merged package&#10;&#10;Rewrote on DTO">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/unirest/core/controllers/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/unirest/core/controllers/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,11 +34,11 @@
     </option>
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="1" />
-    <option name="autoStart" value="false" />
-    <option name="idleThresholdMs" value="0" />
-    <option name="autoCountIdleSeconds" value="0" />
+    <option name="totalTimeSeconds" value="82075" />
+    <option name="idleThresholdMs" value="60000" />
     <option name="pauseOtherTrackerInstances" value="false" />
+    <option name="gitIntegration" value="true" />
+    <option name="naggedAbout" value="1" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -50,9 +48,28 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="UniRest-Server" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="UniRest-Server" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="UniRest-Server" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -68,6 +85,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -84,6 +106,9 @@
       </UrlAndAccount>
     </option>
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -93,43 +118,90 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build UniRest-Server.executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;Spring Boot.UniRestServerApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/.Projects/InteliJ/UniRest-Server/src/main/java/com/unirest/core/utils&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.uml&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build UniRest-Server.executor": "Run",
+    "Gradle.UniRest-Server [build].executor": "Run",
+    "Gradle.UniRest-Server [clean].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.UniRestServerApplication.executor": "Run",
+    "git-widget-placeholder": "feature-refactor",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/.Projects/InteliJ/UniRest-Server",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.unirest.core.models" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\.Projects\InteliJ\UniRest-Server\src\main\java\com\unirest\core\utils" />
       <recent name="D:\.Projects\InteliJ\UniRest-Server" />
+      <recent name="D:\.Projects\InteliJ\UniRest-Server\src\main\java\com\unirest\core\utils" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.unirest.core.repositories" />
       <recent name="com.unirest.core.models" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Gradle.UniRest-Server [build]">
+    <configuration name="UniRest-Server [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="UniRest-Server [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="UniRestServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="UniRest-Server.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.unirest.core.UniRestServerApplication" />
@@ -137,6 +209,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.UniRest-Server [build]" />
+        <item itemvalue="Gradle.UniRest-Server [clean]" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -198,6 +276,21 @@
       <workItem from="1712915833582" duration="10504000" />
       <workItem from="1712994781524" duration="7227000" />
       <workItem from="1713027817087" duration="598000" />
+      <workItem from="1713029973822" duration="230000" />
+      <workItem from="1713030269548" duration="11000" />
+      <workItem from="1713289716661" duration="5968000" />
+      <workItem from="1713425159250" duration="1751000" />
+      <workItem from="1713439828041" duration="1723000" />
+      <workItem from="1713469802239" duration="13000" />
+      <workItem from="1714059129987" duration="5071000" />
+      <workItem from="1714075306538" duration="3804000" />
+      <workItem from="1714119107433" duration="11257000" />
+      <workItem from="1714155137911" duration="130000" />
+      <workItem from="1714155600250" duration="275000" />
+      <workItem from="1714155881862" duration="216000" />
+      <workItem from="1714993651186" duration="288000" />
+      <workItem from="1715081491248" duration="12263000" />
+      <workItem from="1715113257457" duration="3310000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -215,7 +308,31 @@
       <option name="project" value="LOCAL" />
       <updated>1709409792670</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Rebase models&#10;Refactor notification&#10;Add simple launch logger available url-s">
+      <option name="closed" value="true" />
+      <created>1713030033250</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1713030033251</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Rebase models&#10;Refactor notification&#10;Add simple launch logger available url-s">
+      <option name="closed" value="true" />
+      <created>1713030132595</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1713030132595</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Merged package&#10;&#10;Rewrote on DTO">
+      <option name="closed" value="true" />
+      <created>1715116309043</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1715116309043</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -224,7 +341,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit" />
     <MESSAGE value="Update controllers" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update controllers" />
+    <MESSAGE value="Rebase models&#10;Refactor notification&#10;Add simple launch logger available url-s" />
+    <MESSAGE value="Merged package&#10;&#10;Rewrote on DTO" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merged package&#10;&#10;Rewrote on DTO" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

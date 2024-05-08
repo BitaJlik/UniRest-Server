@@ -1,7 +1,7 @@
 package com.unirest.core.services;
 
-import com.unirest.core.models.Session;
-import com.unirest.core.models.User;
+import com.unirest.data.models.Session;
+import com.unirest.data.models.User;
 import com.unirest.core.repositories.SessionRepository;
 import com.unirest.core.repositories.UserRepository;
 import com.unirest.core.utils.JWTUtils;
@@ -14,11 +14,15 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
     UserRepository userRepository;
 
-    @Autowired
     SessionRepository sessionRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository, SessionRepository sessionRepository) {
+        this.userRepository = userRepository;
+        this.sessionRepository = sessionRepository;
+    }
 
     public User saveOrUpdate(User user) {
         return userRepository.save(user);
@@ -64,6 +68,7 @@ public class UserService {
 
         user.setEmail(email);
         user.setPassword(password);
+        user.setCourse(0);
 
         Session session = new Session();
         session.updateDate();

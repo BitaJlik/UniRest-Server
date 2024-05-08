@@ -1,6 +1,6 @@
 package com.unirest.core.repositories;
 
-import com.unirest.core.models.Dormitory;
+import com.unirest.data.models.Dormitory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

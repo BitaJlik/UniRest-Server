@@ -1,15 +1,14 @@
 package com.unirest.core.controllers;
 
 import com.unirest.core.controllers.base.BaseController;
-import com.unirest.core.models.Notification;
-import com.unirest.core.models.User;
-import com.unirest.core.models.dto.DTONotification;
+import com.unirest.data.models.Notification;
+import com.unirest.data.models.User;
+import com.unirest.data.dto.NotificationDTO;
 import com.unirest.core.repositories.NotificationRepository;
 import com.unirest.core.services.UserService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,28 +19,29 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/notification")
-public class NotificationController extends BaseController<Notification, Long, DTONotification, NotificationRepository> {
+public class NotificationController extends BaseController<Notification, Long, NotificationDTO, NotificationRepository> {
+
+    private final UserService userService;
 
     @Autowired
-    private UserService userService;
-
-    public NotificationController(NotificationRepository repository) {
-        super(repository, Notification.class, DTONotification.class);
+    public NotificationController(NotificationRepository repository, UserService userService) {
+        super(repository, Notification.class, NotificationDTO.class);
+        this.userService = userService;
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<DTONotification>> getUserNotifications(@RequestParam("id") Long userId) {
+    public ResponseEntity<List<NotificationDTO>> getUserNotifications(@RequestParam("id") Long userId) {
         User user = userService.findById(userId);
         if (user != null) {
             List<Notification> notifications = repository.findAllBySenderOrReceiver(user, user);
-            List<DTONotification> notificationList = new ArrayList<>();
+            List<NotificationDTO> notificationList = new ArrayList<>();
             for (Notification notification : notifications) {
                 if (!notification.isReceived()) {
                     notification.setReceived(true);
+                    repository.saveAndFlush(notification);
                 }
-                notificationList.add(new DTONotification(notification));
+                notificationList.add(new NotificationDTO(notification));
             }
-            repository.saveAll(notifications);
             return ResponseEntity.ok(notificationList);
         }
         return ResponseEntity.notFound().build();
