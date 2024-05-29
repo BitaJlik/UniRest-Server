@@ -6,8 +6,6 @@ import lombok.Data;
 public class ErrorMessage {
     private String username;
     private String errorTitle;
-    private String errorDescription;
+    private String[] errorDescription;
     private String sdkVersion;
-
-
 }

@@ -2,6 +2,8 @@ package com.unirest.core.repositories;
 
 import com.unirest.data.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,4 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     List<User> findAllByRoomId(Long room);
+
+    @Query("SELECT u FROM User u WHERE u.name LIKE %:keyword% OR u.lastName LIKE %:keyword%")
+    List<User> searchByKeyword(@Param("keyword") String keyword);
 }

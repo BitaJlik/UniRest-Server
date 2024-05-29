@@ -67,6 +67,7 @@ public class User implements IToken, IProviderId<Long> {
             dormitoryId = room.getFloor().getDormitory().getId();
         }
         if (dormitoryId == null) {
+            System.out.println(id);
             dormitoryId = role.getDormitory().getId();
         }
 

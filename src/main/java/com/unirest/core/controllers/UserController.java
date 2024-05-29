@@ -9,6 +9,7 @@ import com.unirest.core.utils.JWTUtils;
 import com.unirest.core.utils.TimedHashMap;
 import com.unirest.data.dto.UserDTO;
 import com.unirest.data.dto.UserPermitDTO;
+import com.unirest.data.dto.UserSearchDTO;
 import com.unirest.data.models.User;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -253,6 +254,29 @@ public class UserController extends BaseController<User, Long, UserDTO, UserRepo
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchUsers(@RequestParam(name = "name", required = false) String name,
+                                         @RequestParam(name = "id", required = false) Long dormitoryId) {
+        List<User> allUsers = repository.searchByKeyword(name);
+
+        if (allUsers != null && !allUsers.isEmpty()) {
+            List<UserSearchDTO> userDTOS = new ArrayList<>();
+            if (dormitoryId != null) {
+                for (User allUser : allUsers) {
+                    if (allUser.getDormitoryId().equals(dormitoryId)) {
+                        userDTOS.add(new UserSearchDTO(allUser));
+                    }
+                }
+            } else {
+                for (User allUser : allUsers) {
+                    userDTOS.add(new UserSearchDTO(allUser));
+                }
+            }
+            return ResponseEntity.ok(userDTOS);
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     public int getRandomNumbers(int min, int max) {
