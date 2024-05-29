@@ -20,7 +20,7 @@ public class User implements IToken, IProviderId<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int balance;
+    private double balance;
 
     private String username;
 

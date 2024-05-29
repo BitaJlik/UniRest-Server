@@ -21,4 +21,7 @@ public class Cooker implements IProviderId<Long> {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Floor floor;
+
+    @ManyToOne
+    private User user;
 }

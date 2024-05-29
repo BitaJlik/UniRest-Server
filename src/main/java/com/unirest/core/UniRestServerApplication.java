@@ -2,6 +2,7 @@ package com.unirest.core;
 
 import com.unirest.core.controllers.base.BaseController;
 import com.unirest.core.utils.Colors;
+import javafx.application.Platform;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

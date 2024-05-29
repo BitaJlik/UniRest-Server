@@ -10,6 +10,7 @@ public class CookerDTO {
     private long busyTo;
     private long lastUse;
     private Long floor;
+    private Long user;
 
     public CookerDTO(Cooker cooker) {
         this.id = cooker.getId();
@@ -17,5 +18,10 @@ public class CookerDTO {
         this.busyTo = cooker.getBusyTo();
         this.lastUse = cooker.getLastUse();
         this.floor = cooker.getFloor().getId();
+        if (cooker.getUser() != null) {
+            this.user = cooker.getUser().getId();
+        } else {
+            this.user = 0L;
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.unirest.core.controllers;
 
 import com.unirest.core.controllers.base.BaseController;
+import com.unirest.core.services.UserService;
 import com.unirest.data.models.Payment;
 import com.unirest.data.models.User;
 import com.unirest.data.dto.PaymentDTO;
@@ -65,6 +66,45 @@ public class PaymentController extends BaseController<Payment, Long, PaymentDTO,
             return ResponseEntity.ok(paymentDTOS);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/moderate/list")
+    public ResponseEntity<?> getPaymentsDormitory(@RequestParam("id") Long dormitoryId) {
+        List<Payment> payments = repository.findAllByDormitoryId(dormitoryId);
+        if (payments != null && !payments.isEmpty()) {
+            List<PaymentDTO> paymentDTOS = new ArrayList<>();
+            for (Payment payment : payments) {
+                paymentDTOS.add(new PaymentDTO(payment));
+            }
+            return ResponseEntity.ok(paymentDTOS);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/moderate")
+    public ResponseEntity<?> moderatePayment(@RequestParam("id") Long paymentId, @RequestParam("valid") boolean isValid) {
+        Optional<Payment> byId = repository.findById(paymentId);
+        if (byId.isPresent()) {
+            Payment payment = byId.get();
+            if (payment.isModerated()) {
+                if (payment.isValid()) {
+                    User user = payment.getUser();
+                    user.setBalance(user.getBalance() - payment.getBalance());
+                }
+                return ResponseEntity.badRequest().build();
+            } else {
+                payment.setModerated(true);
+                payment.setValid(isValid);
+                payment.setModerateDate(System.currentTimeMillis());
+                if (isValid) {
+                    User user = payment.getUser();
+                    user.setBalance(user.getBalance() + payment.getBalance());
+                }
+                repository.save(payment);
+                return ResponseEntity.status(202).build();
+            }
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/check/upload")

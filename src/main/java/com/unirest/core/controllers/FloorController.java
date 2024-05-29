@@ -35,4 +35,6 @@ public class FloorController extends BaseController<Floor, Long, FloorDTO, Floor
         return ResponseEntity.ok(floors);
     }
 
+
+
 }

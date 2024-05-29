@@ -47,7 +47,7 @@ public class TestController {
     private static final String[] DOMAINS = {"gmail.com", "yahoo.com", "hotmail.com", "outlook.com"};
     private static final String[] PASSWORDS = {"password1", "password2", "password3", "password4", "password5"};
 
-    private static final String[] ROLES = {"commandant", "helper", "dorm_supervisor", "floor_supervisor", "other"};
+    private static final String[] ROLES = {"commandant", "helper", "dorm_supervisor", "floor_supervisor", "other", "default"};
     private static final Long[] expires = {1622870400L, 1654406400L, 1686038400L, 1717574400L};
 
     @GetMapping("/init")
@@ -215,6 +215,7 @@ public class TestController {
         user.setBalance((int) (Math.random() * 1000));
         user.setPhoneNumber(generatePhoneNumber());
         user.setExpire(random(expires) * 1000);
+        user.setRole(userRolesRepository.findAll().get(5));
 
         return userRepository.saveAndFlush(user);
     }
@@ -226,7 +227,7 @@ public class TestController {
         return firstName.toLowerCase() + "." + lastName.toLowerCase() + "@" + domain;
     }
 
-    public static  <T> T random(T[] list) {
+    public static <T> T random(T[] list) {
         return list[(int) (Math.random() * list.length)];
     }
 

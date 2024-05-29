@@ -48,6 +48,13 @@ public class WasherController extends BaseController<Washer, Long, WasherDTO, Wa
         if (washers != null && !washers.isEmpty()) {
             List<WasherDTO> washersList = new ArrayList<>();
             for (Washer washer : washers) {
+                if (washer.isBusy()) {
+                    if (washer.getBusyTo() < System.currentTimeMillis()) {
+                        washer.setUser(null);
+                        washer.setBusy(false);
+                        repository.save(washer);
+                    }
+                }
                 washersList.add(new WasherDTO(washer));
             }
             return ResponseEntity.ok(washersList);
@@ -69,5 +76,6 @@ public class WasherController extends BaseController<Washer, Long, WasherDTO, Wa
         }
         return ResponseEntity.notFound().build();
     }
+
 
 }
