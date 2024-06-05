@@ -10,13 +10,13 @@ public class RequestAnswer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @CreationTimestamp
-    private long created;
-
-    private long date;
+    private long time;
 
     private boolean accepted;
 
     @OneToOne
     private Request request;
+
+    @OneToOne
+    private RequestTemplate requestTemplate;
 }

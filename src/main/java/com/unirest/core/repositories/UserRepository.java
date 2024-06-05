@@ -20,5 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllByRoomId(Long room);
 
     @Query("SELECT u FROM User u WHERE u.name LIKE %:keyword% OR u.lastName LIKE %:keyword%")
-    List<User> searchByKeyword(@Param("keyword") String keyword);
+    List<User> searchAllByKeyword(@Param("keyword") String keyword);
+
+    List<User> searchAllByRoomIsNull();
 }

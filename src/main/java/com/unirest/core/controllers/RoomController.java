@@ -4,14 +4,14 @@ import com.unirest.core.controllers.base.BaseController;
 import com.unirest.data.models.Room;
 import com.unirest.data.dto.RoomDTO;
 import com.unirest.core.repositories.RoomRepository;
+import com.unirest.data.models.User;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/room")
@@ -25,7 +25,7 @@ public class RoomController extends BaseController<Room, Long, RoomDTO, RoomRepo
     public ResponseEntity<?> of(@RequestParam("id") Long floorId) {
         List<Room> allByFloorId = repository.findAllByFloorId(floorId);
         if (allByFloorId.isEmpty()) {
-             return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         }
         List<RoomDTO> floors = new ArrayList<>();
 

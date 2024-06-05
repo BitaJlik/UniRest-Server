@@ -188,14 +188,14 @@ public class TestController {
         int maxDay = (int) LocalDate.of(2024, 1, 1).toEpochDay();
 
         for (int i = 0; i < 1 + Math.random() * 4; i++) {
-            Request request = new Request();
-            long randomDay = minDay + random.nextInt(maxDay - minDay);
-            request.setDate(randomDay);
-            request.setHeader(UUID.randomUUID().toString().replace("-", ""));
-            request.setDormitory(dormitory);
-            request.setType(Request.RequestType.values()[(int) (Math.random() * Request.RequestType.values().length)]);
-            request.setUser(user);
-            list.add(requestRepository.save(request));
+//            Request request = new Request();
+//            long randomDay = minDay + random.nextInt(maxDay - minDay);
+//            request.setDate(randomDay);
+//            request.setHeader(UUID.randomUUID().toString().replace("-", ""));
+//            request.setDormitory(dormitory);
+//            request.setType(Request.RequestType.values()[(int) (Math.random() * Request.RequestType.values().length)]);
+//            request.setUser(user);
+//            list.add(requestRepository.save(request));
         }
 
         return list;

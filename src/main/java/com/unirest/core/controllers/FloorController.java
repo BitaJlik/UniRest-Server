@@ -1,17 +1,17 @@
 package com.unirest.core.controllers;
 
 import com.unirest.core.controllers.base.BaseController;
+import com.unirest.data.dto.DormitoryDTO;
+import com.unirest.data.models.Dormitory;
 import com.unirest.data.models.Floor;
 import com.unirest.data.dto.FloorDTO;
 import com.unirest.core.repositories.FloorRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/floor")
@@ -35,6 +35,14 @@ public class FloorController extends BaseController<Floor, Long, FloorDTO, Floor
         return ResponseEntity.ok(floors);
     }
 
+    @PostMapping("/admin/update")
+    public ResponseEntity<?> updateData(FloorDTO floorDTO) {
+        Optional<Floor> byId = repository.findById(floorDTO.getId());
+        if (byId.isPresent()) {
+            Floor floor = byId.get();
+        }
+        return ResponseEntity.badRequest().build();
+    }
 
 
 }

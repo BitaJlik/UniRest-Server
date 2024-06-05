@@ -35,7 +35,9 @@ public class UserDTO {
         this.phoneNumber = user.getPhoneNumber();
         this.emailVerified = user.isEmailVerified();
         this.expire = user.getExpire();
-        this.room = new RoomDTO(user.getRoom());
+        if(user.getRoom() != null){
+            this.room =  new RoomDTO(user.getRoom());
+        }
         if (user.getRole() != null) {
             this.role = new UserRoleDTO(user.getRole());
         }

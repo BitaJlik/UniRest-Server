@@ -21,7 +21,7 @@ public class MainController {
 
     @PostMapping(value = "/error", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void receiveError(@RequestBody String jsonError) {
-        fileService.saveFile("errors", UUID.randomUUID().toString(), jsonError);
+        fileService.saveFile("errors", UUID.randomUUID().toString(), jsonError,".json");
     }
 
 }

@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 public abstract class BaseController<Data extends IProviderId<?>, DataID, DTOClass, Repo extends JpaRepository<Data, DataID>> {
 
     protected final Repo repository;
@@ -63,14 +64,18 @@ public abstract class BaseController<Data extends IProviderId<?>, DataID, DTOCla
 
     protected DTOClass wrapToDTO(Data data) {
         if (hasDTO) {
-            try {
-                return dtoClass.getDeclaredConstructor(dataClass).newInstance(data);
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                     NoSuchMethodException e) {
-                throw new RuntimeException(e);
-            }
+            return wrapToDTO(data, dtoClass);
         }
         throw new RuntimeException(data.getClass().getSimpleName() + " Don`t have DTO Class");
+    }
+
+    protected <Return> Return wrapToDTO(Object data, Class<Return> tClass) {
+        try {
+            return tClass.getDeclaredConstructor(data.getClass()).newInstance(data);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

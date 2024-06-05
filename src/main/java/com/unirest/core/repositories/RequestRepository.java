@@ -11,5 +11,5 @@ import java.util.List;
 public interface RequestRepository extends JpaRepository<Request, Long> {
     List<Request> findAllByDormitoryId(Long id);
 
-    List<Request> findByUser(User user);
+    List<Request> findByUserId(Long id);
 }

@@ -13,9 +13,9 @@ public class FileService {
 
     private static final String UPLOAD_DIR = "./uploads/";
 
-    public void saveFile(String folder, String fileName, String fileContent) {
+    public void saveFile(String folder, String fileName, String fileContent,String ext) {
         try {
-            String fileNameWithExtension = fileName + ".json";
+            String fileNameWithExtension = fileName + ext;
 
             Path uploadDir = Paths.get(UPLOAD_DIR, folder);
             if (!Files.exists(uploadDir)) {
