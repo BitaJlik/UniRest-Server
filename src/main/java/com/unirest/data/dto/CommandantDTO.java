@@ -10,6 +10,10 @@ public class CommandantDTO {
     private String phone;
     private Long lastActive;
 
+    public CommandantDTO() {
+
+    }
+
     public CommandantDTO(User user) {
         this.name = user.getName();
         this.lastName = user.getLastName();

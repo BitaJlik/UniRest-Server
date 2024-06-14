@@ -67,6 +67,54 @@ public class PaymentController extends BaseController<Payment, Long, PaymentDTO,
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/moderate/list")
+    public ResponseEntity<?> getPaymentsDormitory(@RequestParam("id") Long dormitoryId) {
+        List<Payment> payments = repository.findAllByDormitoryId(dormitoryId);
+        if (payments != null && !payments.isEmpty()) {
+            List<PaymentDTO> paymentDTOS = new ArrayList<>();
+            for (Payment payment : payments) {
+                paymentDTOS.add(new PaymentDTO(payment));
+            }
+            return ResponseEntity.ok(paymentDTOS);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/moderate")
+    public ResponseEntity<?> moderatePayment(@RequestParam("id") Long paymentId, @RequestParam("valid") boolean isValid) {
+        Optional<Payment> byId = repository.findById(paymentId);
+        if (byId.isPresent()) {
+            Payment payment = byId.get();
+            if (payment.isModerated()) {
+                if (payment.isValid() && !isValid) {
+                    payment.setValid(false);
+                    User user = payment.getUser();
+                    user.setBalance(user.getBalance() - payment.getBalance());
+                    repository.save(payment);
+                    return ResponseEntity.ok().build();
+                } else if (!payment.isValid() && isValid) {
+                    payment.setValid(true);
+                    User user = payment.getUser();
+                    user.setBalance(user.getBalance() + payment.getBalance());
+                    repository.save(payment);
+                    return ResponseEntity.ok().build();
+                }
+                return ResponseEntity.badRequest().build();
+            } else {
+                payment.setModerated(true);
+                payment.setValid(isValid);
+                payment.setModerateDate(System.currentTimeMillis());
+                if (isValid) {
+                    User user = payment.getUser();
+                    user.setBalance(user.getBalance() + payment.getBalance());
+                }
+                repository.save(payment);
+                return ResponseEntity.status(202).build();
+            }
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     @PostMapping("/check/upload")
     public ResponseEntity<?> uploadCheck(@RequestParam("id") String checkId, @RequestPart("image") MultipartFile multipartFile) {
         imageService.saveImage("checks", checkId, multipartFile);

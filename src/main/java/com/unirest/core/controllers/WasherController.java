@@ -1,6 +1,9 @@
 package com.unirest.core.controllers;
 
 import com.unirest.core.controllers.base.BaseController;
+import com.unirest.data.dto.CookerDTO;
+import com.unirest.data.models.Cooker;
+import com.unirest.data.models.Floor;
 import com.unirest.data.models.User;
 import com.unirest.data.models.Washer;
 import com.unirest.data.dto.WasherDTO;
@@ -48,6 +51,13 @@ public class WasherController extends BaseController<Washer, Long, WasherDTO, Wa
         if (washers != null && !washers.isEmpty()) {
             List<WasherDTO> washersList = new ArrayList<>();
             for (Washer washer : washers) {
+                if (washer.isBusy()) {
+                    if (washer.getBusyTo() < System.currentTimeMillis()) {
+                        washer.setUser(null);
+                        washer.setBusy(false);
+                        repository.save(washer);
+                    }
+                }
                 washersList.add(new WasherDTO(washer));
             }
             return ResponseEntity.ok(washersList);
@@ -69,5 +79,29 @@ public class WasherController extends BaseController<Washer, Long, WasherDTO, Wa
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PostMapping("/admin/update")
+    public ResponseEntity<?> uploadWasher(@RequestParam("remove") Boolean isRemove, @RequestBody WasherDTO washerDTO) {
+        if (isRemove != null) {
+            if (isRemove) {
+                if (washerDTO.getId() != null) {
+                    repository.deleteById(washerDTO.getId());
+                    return ResponseEntity.ok().build();
+                }
+            } else {
+                if (washerDTO.getFloor() != null) {
+                    Floor floor = new Floor();
+                    floor.setId(washerDTO.getFloor());
+                    repository.findAllByFloorId(washerDTO.getFloor());
+                    Washer washer = new Washer();
+                    washer.setFloor(floor);
+                    repository.save(washer);
+                    return ResponseEntity.ok().build();
+                }
+            }
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
 
 }

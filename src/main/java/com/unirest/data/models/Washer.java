@@ -19,7 +19,7 @@ public class Washer implements IProviderId<Long> {
 
     private long lastUse;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Floor floor;
 
     @ManyToOne

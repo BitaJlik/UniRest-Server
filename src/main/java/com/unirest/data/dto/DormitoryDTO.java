@@ -27,6 +27,10 @@ public class DormitoryDTO {
     private int totalTakenBeds;
     private int totalFreeBeds;
 
+    public DormitoryDTO() {
+
+    }
+
     public DormitoryDTO(Dormitory dormitory) {
         this.id = dormitory.getId();
         this.address = dormitory.getAddress();

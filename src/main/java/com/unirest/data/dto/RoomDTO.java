@@ -14,12 +14,14 @@ public class RoomDTO {
     private int number;
     private List<Long> users = new ArrayList<>();
     private String notes;
+    private Long floorId;
 
     public RoomDTO(Room room) {
         this.id = room.getId();
         this.beds = room.getAvailableBeds();
         this.number = room.getRoomNumber();
         this.notes = room.getNotes();
+        this.floorId = room.getFloor().getId();
         for (User user : room.getUsers()) {
             users.add(user.getId());
         }

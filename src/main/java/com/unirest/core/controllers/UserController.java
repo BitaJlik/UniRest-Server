@@ -9,6 +9,8 @@ import com.unirest.core.utils.JWTUtils;
 import com.unirest.core.utils.TimedHashMap;
 import com.unirest.data.dto.UserDTO;
 import com.unirest.data.dto.UserPermitDTO;
+import com.unirest.data.dto.UserSearchDTO;
+import com.unirest.data.models.Room;
 import com.unirest.data.models.User;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -30,7 +30,6 @@ public class UserController extends BaseController<User, Long, UserDTO, UserRepo
     private final NotificationRepository notificationRepository;
     private final UserService userService;
     private final ImageService imageService;
-
 
     @Autowired
     public UserController(UserRepository userRepository, NotificationRepository notificationRepository, UserService userService, ImageService imageService) {
@@ -253,6 +252,93 @@ public class UserController extends BaseController<User, Long, UserDTO, UserRepo
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchUsers(@RequestParam(name = "name", required = false) String name,
+                                         @RequestParam(name = "id", required = false) Long dormitoryId) {
+        List<User> allUsers = repository.searchAllByKeyword(name);
+
+        if (allUsers != null && !allUsers.isEmpty()) {
+            List<UserSearchDTO> userDTOS = new ArrayList<>();
+            if (dormitoryId != null) {
+                for (User allUser : allUsers) {
+                    if (allUser.getDormitoryId().equals(dormitoryId)) {
+                        userDTOS.add(new UserSearchDTO(allUser));
+                    }
+                }
+            } else {
+                for (User allUser : allUsers) {
+                    userDTOS.add(new UserSearchDTO(allUser));
+                }
+            }
+            return ResponseEntity.ok(userDTOS);
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/room/add")
+    public ResponseEntity<?> addUserToRoom(@RequestParam("id") Long userId, @RequestParam("roomId") Long roomId) {
+        Optional<User> byId = repository.findById(userId);
+        if (byId.isPresent()) {
+            User user = byId.get();
+            Room room = new Room();
+            room.setId(roomId);
+            user.setRoom(room);
+            repository.save(user);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/room/remove")
+    public ResponseEntity<?> removeUserFromRoom(@RequestParam("id") Long userId, @RequestParam("roomId") Long roomId) {
+        Optional<User> byId = repository.findById(userId);
+        if (byId.isPresent()) {
+            User user = byId.get();
+            if (user.getRoom().getId() == roomId) {
+                user.setRoom(null);
+                repository.save(user);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/room/searching")
+    public ResponseEntity<?> searchForRoom(@RequestParam(value = "hasRoom", required = false) Boolean withoutRoom,
+                                           @RequestParam(value = "keyWord", required = false) String keyword) {
+        System.out.println(keyword);
+        System.out.println(withoutRoom);
+
+        List<User> users = null;
+        List<User> sortUsers = new ArrayList<>();
+
+        if (keyword != null && !keyword.isEmpty()) {
+            users = repository.searchAllByKeyword(keyword);
+        }
+
+        if (withoutRoom != null && withoutRoom) {
+            if (users == null) {
+                users = repository.searchAllByRoomIsNull();
+            } else {
+                for (User user : users) {
+                    if (user.getRoom() != null) {
+                        sortUsers.add(user);
+                    }
+                }
+                users.removeAll(sortUsers);
+            }
+        }
+        if (users != null && !users.isEmpty()) {
+            List<UserDTO> userDTOS = new ArrayList<>();
+            for (User user : users) {
+                userDTOS.add(wrapToDTO(user));
+            }
+            return ResponseEntity.ok(userDTOS);
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     public int getRandomNumbers(int min, int max) {

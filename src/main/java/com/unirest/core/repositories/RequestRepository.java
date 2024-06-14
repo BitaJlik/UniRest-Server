@@ -1,6 +1,5 @@
 package com.unirest.core.repositories;
 
-import com.unirest.data.models.Dormitory;
 import com.unirest.data.models.Request;
 import com.unirest.data.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
-    List<Request> findByDormitory(Dormitory dormitory);
+    List<Request> findAllByDormitoryId(Long id);
 
-    List<Request> findByUser(User user);
+    List<Request> findByUserId(Long id);
 }

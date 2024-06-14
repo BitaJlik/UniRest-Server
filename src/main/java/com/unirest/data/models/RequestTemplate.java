@@ -1,23 +1,28 @@
 package com.unirest.data.models;
 
-import com.unirest.core.utils.IProviderId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "paids")
 @Getter
 @Setter
-public class Paid implements IProviderId<Long> {
+@Table(name = "requests_templates")
+public class RequestTemplate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private boolean visible;
+    private int level;
 
-    private long date;
+    private String keysJson;
 
-    private double balance;
+    private String name;
+    private String templateName;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    private long registerTime;
+
+    @ManyToOne
     private Dormitory dormitory;
 }

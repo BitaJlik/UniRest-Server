@@ -15,9 +15,8 @@ public class Request implements IProviderId<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String header;
-    private RequestType type;
     private long date;
+    private String fileId;
 
     @ManyToOne
     private User user;
@@ -25,7 +24,7 @@ public class Request implements IProviderId<Long> {
     @ManyToOne
     private Dormitory dormitory;
 
-    public enum RequestType {
-        ADD, REMOVE, UPDATE
-    }
+    @ManyToOne
+    private RequestTemplate template;
+
 }

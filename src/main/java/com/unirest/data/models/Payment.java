@@ -17,7 +17,9 @@ public class Payment implements IProviderId<Long> {
     private double balance;
     private String checkId;
 
+    private long moderateDate;
     private boolean moderated;
+    private boolean valid;
 
     @ManyToOne
     private User user;

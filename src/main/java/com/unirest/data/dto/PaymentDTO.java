@@ -10,7 +10,9 @@ public class PaymentDTO {
     private double balance;
     private String checkId;
 
+    private long moderateDate;
     private boolean moderated;
+    private boolean valid;
 
     private Long dormitoryId;
 
@@ -20,6 +22,8 @@ public class PaymentDTO {
         this.balance = payment.getBalance();
         this.checkId = payment.getCheckId();
         this.moderated = payment.isModerated();
+        this.valid = payment.isValid();
+        this.moderateDate = payment.getModerateDate();
         this.dormitoryId = payment.getDormitory().getId();
     }
 

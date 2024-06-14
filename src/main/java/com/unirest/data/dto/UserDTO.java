@@ -9,7 +9,7 @@ public class UserDTO {
     private Long dormitoryId;
     private String email;
 
-    private int balance;
+    private double balance;
     private String username;
     private String name;
     private String lastName;
@@ -17,9 +17,11 @@ public class UserDTO {
     private String password;
     private int course;
     private String phoneNumber;
+    private String universityName;
     private boolean emailVerified;
     private long expire;
-    public RoomDTO room;
+    private RoomDTO room;
+    private UserRoleDTO role;
 
     public UserDTO(User user) {
         this.id = user.getId();
@@ -34,6 +36,12 @@ public class UserDTO {
         this.phoneNumber = user.getPhoneNumber();
         this.emailVerified = user.isEmailVerified();
         this.expire = user.getExpire();
-        this.room = new RoomDTO(user.getRoom());
+        this.universityName = user.getUniversityName();
+        if (user.getRoom() != null) {
+            this.room = new RoomDTO(user.getRoom());
+        }
+        if (user.getRole() != null) {
+            this.role = new UserRoleDTO(user.getRole());
+        }
     }
 }

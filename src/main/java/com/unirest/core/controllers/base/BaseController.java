@@ -4,7 +4,6 @@ import com.unirest.core.utils.IProviderId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 public abstract class BaseController<Data extends IProviderId<?>, DataID, DTOClass, Repo extends JpaRepository<Data, DataID>> {
 
     protected final Repo repository;
@@ -35,15 +35,7 @@ public abstract class BaseController<Data extends IProviderId<?>, DataID, DTOCla
         Optional<Data> dataOptional = repository.findById(dataID);
         return dataOptional.map(data -> {
             if (hasDTO) {
-                DTOClass object;
-                try {
-                    object = dtoClass.getDeclaredConstructor(dataClass).newInstance(data);
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                         NoSuchMethodException e) {
-                    throw new RuntimeException(e);
-                }
-
-                return ResponseEntity.ok(object);
+                return ResponseEntity.ok(wrapToDTO(data));
             } else {
                 return ResponseEntity.ok(data);
             }
@@ -70,6 +62,21 @@ public abstract class BaseController<Data extends IProviderId<?>, DataID, DTOCla
         }
     }
 
+    protected DTOClass wrapToDTO(Data data) {
+        if (hasDTO) {
+            return wrapToDTO(data, dtoClass);
+        }
+        throw new RuntimeException(data.getClass().getSimpleName() + " Don`t have DTO Class");
+    }
+
+    protected <Return> Return wrapToDTO(Object data, Class<Return> tClass) {
+        try {
+            return tClass.getDeclaredConstructor(data.getClass()).newInstance(data);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }

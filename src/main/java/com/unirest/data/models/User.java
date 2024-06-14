@@ -20,13 +20,15 @@ public class User implements IToken, IProviderId<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int balance;
+    private double balance;
 
     private String username;
 
     private String name;
     private String lastName;
     private String surName;
+
+    private boolean takePaid = true;
 
     @JsonIgnore
     private String password;
@@ -67,6 +69,7 @@ public class User implements IToken, IProviderId<Long> {
             dormitoryId = room.getFloor().getDormitory().getId();
         }
         if (dormitoryId == null) {
+            System.out.println(id);
             dormitoryId = role.getDormitory().getId();
         }
 
