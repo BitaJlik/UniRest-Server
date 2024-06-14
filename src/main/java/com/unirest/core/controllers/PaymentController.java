@@ -1,7 +1,6 @@
 package com.unirest.core.controllers;
 
 import com.unirest.core.controllers.base.BaseController;
-import com.unirest.core.services.UserService;
 import com.unirest.data.models.Payment;
 import com.unirest.data.models.User;
 import com.unirest.data.dto.PaymentDTO;
@@ -87,9 +86,18 @@ public class PaymentController extends BaseController<Payment, Long, PaymentDTO,
         if (byId.isPresent()) {
             Payment payment = byId.get();
             if (payment.isModerated()) {
-                if (payment.isValid()) {
+                if (payment.isValid() && !isValid) {
+                    payment.setValid(false);
                     User user = payment.getUser();
                     user.setBalance(user.getBalance() - payment.getBalance());
+                    repository.save(payment);
+                    return ResponseEntity.ok().build();
+                } else if (!payment.isValid() && isValid) {
+                    payment.setValid(true);
+                    User user = payment.getUser();
+                    user.setBalance(user.getBalance() + payment.getBalance());
+                    repository.save(payment);
+                    return ResponseEntity.ok().build();
                 }
                 return ResponseEntity.badRequest().build();
             } else {

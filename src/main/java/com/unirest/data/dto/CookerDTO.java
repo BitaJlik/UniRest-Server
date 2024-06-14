@@ -12,6 +12,8 @@ public class CookerDTO {
     private Long floor;
     private Long user;
 
+    public CookerDTO() {
+    }
     public CookerDTO(Cooker cooker) {
         this.id = cooker.getId();
         this.isBusy = cooker.isBusy();

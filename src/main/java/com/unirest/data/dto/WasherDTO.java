@@ -16,6 +16,10 @@ public class WasherDTO {
     private Long floor;
     private Long user;
 
+    public WasherDTO(){
+
+    }
+
     public WasherDTO(Washer washer) {
         this.id = washer.getId();
         this.isBusy = washer.isBusy();

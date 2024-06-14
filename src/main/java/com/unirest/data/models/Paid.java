@@ -16,10 +16,8 @@ public class Paid implements IProviderId<Long> {
 
     private long date;
 
-    private long value;
+    private double balance;
 
-    private long isSum;
-
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Dormitory dormitory;
 }

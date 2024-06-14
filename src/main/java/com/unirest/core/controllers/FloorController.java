@@ -1,8 +1,6 @@
 package com.unirest.core.controllers;
 
 import com.unirest.core.controllers.base.BaseController;
-import com.unirest.data.dto.DormitoryDTO;
-import com.unirest.data.models.Dormitory;
 import com.unirest.data.models.Floor;
 import com.unirest.data.dto.FloorDTO;
 import com.unirest.core.repositories.FloorRepository;
@@ -36,10 +34,18 @@ public class FloorController extends BaseController<Floor, Long, FloorDTO, Floor
     }
 
     @PostMapping("/admin/update")
-    public ResponseEntity<?> updateData(FloorDTO floorDTO) {
+    public ResponseEntity<?> updateData(@RequestBody FloorDTO floorDTO) {
         Optional<Floor> byId = repository.findById(floorDTO.getId());
         if (byId.isPresent()) {
             Floor floor = byId.get();
+            if (floorDTO.getFloorSide() != null) {
+                floor.setFloorSide(floorDTO.getFloorSide());
+            }
+            if (floorDTO.getShortName() != null) {
+                floor.setShortName(floorDTO.getShortName());
+            }
+            repository.save(floor);
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
     }

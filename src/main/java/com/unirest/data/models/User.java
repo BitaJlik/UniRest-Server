@@ -28,6 +28,8 @@ public class User implements IToken, IProviderId<Long> {
     private String lastName;
     private String surName;
 
+    private boolean takePaid = true;
+
     @JsonIgnore
     private String password;
     private String email;

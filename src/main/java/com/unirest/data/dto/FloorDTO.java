@@ -22,6 +22,10 @@ public class FloorDTO {
     private List<Long> cookers = new ArrayList<>();
     private List<Long> washers = new ArrayList<>();
 
+    public FloorDTO(){
+
+    }
+
     public FloorDTO(Floor floor) {
         this.id = floor.getId();
         this.number = floor.getFloorNumber();

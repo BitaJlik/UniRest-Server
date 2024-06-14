@@ -6,6 +6,7 @@ import com.unirest.data.dto.CookerDTO;
 import com.unirest.data.dto.WasherDTO;
 import com.unirest.data.models.Cooker;
 import com.unirest.core.repositories.CookersRepository;
+import com.unirest.data.models.Floor;
 import com.unirest.data.models.User;
 import com.unirest.data.models.Washer;
 import org.springframework.http.ResponseEntity;
@@ -75,4 +76,27 @@ public class CookerController extends BaseController<Cooker, Long, CookerDTO, Co
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PostMapping("/admin/update")
+    public ResponseEntity<?> uploadWasher(@RequestParam("remove") Boolean isRemove, @RequestBody CookerDTO cookerDTO) {
+        if (isRemove != null) {
+            if (isRemove) {
+                if (cookerDTO.getId() != null) {
+                    repository.deleteById(cookerDTO.getId());
+                    return ResponseEntity.ok().build();
+                }
+            } else {
+                if (cookerDTO.getFloor() != null) {
+                    Floor floor = new Floor();
+                    floor.setId(cookerDTO.getFloor());
+                    Cooker cooker = new Cooker();
+                    cooker.setFloor(floor);
+                    repository.save(cooker);
+                    return ResponseEntity.ok().build();
+                }
+            }
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
 }

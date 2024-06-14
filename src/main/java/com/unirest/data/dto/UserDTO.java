@@ -17,6 +17,7 @@ public class UserDTO {
     private String password;
     private int course;
     private String phoneNumber;
+    private String universityName;
     private boolean emailVerified;
     private long expire;
     private RoomDTO room;
@@ -35,8 +36,9 @@ public class UserDTO {
         this.phoneNumber = user.getPhoneNumber();
         this.emailVerified = user.isEmailVerified();
         this.expire = user.getExpire();
-        if(user.getRoom() != null){
-            this.room =  new RoomDTO(user.getRoom());
+        this.universityName = user.getUniversityName();
+        if (user.getRoom() != null) {
+            this.room = new RoomDTO(user.getRoom());
         }
         if (user.getRole() != null) {
             this.role = new UserRoleDTO(user.getRole());

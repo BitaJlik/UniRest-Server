@@ -6,6 +6,7 @@ import com.unirest.data.dto.DormitoryDTO;
 import com.unirest.core.repositories.DormitoryRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +20,7 @@ public class DormitoryController extends BaseController<Dormitory, Long, Dormito
     }
 
     @PostMapping("/admin/update")
-    public ResponseEntity<?> updateData(DormitoryDTO dormitoryDTO) {
+    public ResponseEntity<?> updateData(@RequestBody DormitoryDTO dormitoryDTO) {
         Optional<Dormitory> byId = repository.findById(dormitoryDTO.getId());
         if (byId.isPresent()) {
             Dormitory dormitory = byId.get();
@@ -33,6 +34,8 @@ public class DormitoryController extends BaseController<Dormitory, Long, Dormito
                 dormitory.setCookerType(dormitoryDTO.getCookerType());
             }
             dormitory.setHasElevator(dormitory.isHasElevator());
+            repository.save(dormitory);
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
     }

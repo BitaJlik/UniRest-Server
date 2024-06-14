@@ -1,5 +1,6 @@
 package com.unirest.core.repositories;
 
+import com.unirest.data.models.Dormitory;
 import com.unirest.data.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> searchAllByKeyword(@Param("keyword") String keyword);
 
     List<User> searchAllByRoomIsNull();
+
 }
